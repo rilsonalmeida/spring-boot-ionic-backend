@@ -28,7 +28,6 @@ public class CategoriaResource {
 		return ResponseEntity.ok().body(obj);
 	}
 
-
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
 
@@ -39,8 +38,6 @@ public class CategoriaResource {
 		return ResponseEntity.created(uri).build();		
 	}
 	
-
-
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id) {
 
@@ -49,6 +46,11 @@ public class CategoriaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+	}
 	
 	
 }

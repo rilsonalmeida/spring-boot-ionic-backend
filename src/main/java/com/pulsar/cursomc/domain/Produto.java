@@ -133,6 +133,4 @@ public class Produto implements Serializable {
 		return true;
 	}
 
-
-	
 }

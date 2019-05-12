@@ -17,7 +17,7 @@ public class DevConfig {
 	@Autowired
 	private DBService dbService;
 	
-	@Value("${string.jpa.hibernate.ddl-auto}")
+	@Value("${spring.jpa.hibernate.ddl-auto}")
 	private String strategy;
 	
 	

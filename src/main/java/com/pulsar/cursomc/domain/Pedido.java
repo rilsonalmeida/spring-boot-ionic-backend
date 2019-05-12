@@ -1,8 +1,11 @@
 package com.pulsar.cursomc.domain;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -115,7 +118,7 @@ public class Pedido implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
+		return result; 
 	}
 
 	@Override
@@ -135,6 +138,28 @@ public class Pedido implements Serializable {
 		return true;
 	}
 
-	
-	
+	@Override
+	public String toString() {
+		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR")); 
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:MM:ss");
+		StringBuilder builder = new StringBuilder();
+		builder.append("Pedido número: ");
+		builder.append(getId());
+		builder.append(", Instante: ");
+		builder.append(sdf.format(getInstante()));		
+		builder.append(", Cliente: ");
+		builder.append(getCliente().getNome());
+		builder.append(", Situação do pagamento: ");
+		builder.append(getPagamento().getEstado().getDescricao());
+		builder.append("\nDetalhes do pedido:\n");
+		int linePed = 1;
+		for (ItemPedido ip : getItens()) {
+			builder.append("\tItem #" + linePed + " - "+ ip.toString());
+			linePed++;
+		}
+		builder.append("\nValor total: ");
+		builder.append(nf.format(getValorTotal()));
+		return builder.toString();
+	}
+
 }

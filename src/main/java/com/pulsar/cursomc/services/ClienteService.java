@@ -17,9 +17,12 @@ import com.pulsar.cursomc.domain.Cliente;
 import com.pulsar.cursomc.domain.Endereco;
 import com.pulsar.cursomc.domain.dto.ClienteDTO;
 import com.pulsar.cursomc.domain.dto.ClienteNewDTO;
+import com.pulsar.cursomc.domain.enums.Perfil;
 import com.pulsar.cursomc.domain.enums.TipoCliente;
 import com.pulsar.cursomc.repositories.ClienteRepository;
 import com.pulsar.cursomc.repositories.EnderecoRepository;
+import com.pulsar.cursomc.security.UserSS;
+import com.pulsar.cursomc.services.exceptions.AuthorizationException;
 import com.pulsar.cursomc.services.exceptions.DataIntegrityException;
 import com.pulsar.cursomc.services.exceptions.ObjectNotFoundException;
 
@@ -37,6 +40,13 @@ public class ClienteService {
 	
 	public Cliente find(Integer id) {
 
+		UserSS user = UserService.authenticated();
+		
+		if (user==null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId()))
+		{
+			throw new AuthorizationException("Acesso negado!");
+		}
+		
 		Optional<Cliente> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
